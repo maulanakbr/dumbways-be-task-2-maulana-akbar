@@ -1,0 +1,58 @@
+{
+  "name": "dumbways-be-task-1-maulana-akbar",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/server.ts",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "db:generate": "pnpm exec typeorm-ts-node-esm migration:generate src/database/migrations/test-migrate -d src/database/index.ts",
+    "db:migrate": "pnpm exec typeorm-ts-node-esm migration:run -d src/database/index.ts"
+  },
+  "keywords": [
+    "typescript",
+    "express",
+    "sequelize"
+  ],
+  "author": "Maulana Akbar Yudistika",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/body-parser": "^1.19.2",
+    "@types/cors": "^2.8.14",
+    "@types/express": "^4.17.17",
+    "@types/multer": "^1.4.8",
+    "@types/node": "^20.5.0",
+    "@types/sequelize": "^4.28.15",
+    "@typescript-eslint/eslint-plugin": "^6.7.0",
+    "@typescript-eslint/parser": "^6.6.0",
+    "eslint": "^8.48.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^17.1.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "nodemon": "^3.0.1",
+    "prettier": "^3.0.3",
+    "sequelize-cli": "^6.6.1",
+    "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.0",
+    "cloudinary": "^1.41.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "multer": "1.4.5-lts.1",
+    "mysql2": "^3.6.1",
+    "reflect-metadata": "^0.1.13",
+    "sequelize": "^6.32.1",
+    "tslib": "^2.6.2",
+    "typedi": "^0.10.0",
+    "typeorm": "^0.3.17",
+    "winston": "^3.10.0",
+    "winston-daily-rotate-file": "^4.7.1"
+  }
+}
