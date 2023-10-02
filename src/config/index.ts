@@ -16,5 +16,6 @@ export const {
   UPLOAD_API_KEY,
   UPLOAD_API_SECRET,
   LOG_DIR,
+  LOG_FORMAT,
   ORIGIN,
 } = process.env;

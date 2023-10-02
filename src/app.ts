@@ -1,11 +1,13 @@
 import 'reflect-metadata';
 import express from 'express';
-import { CREDENTIALS, NODE_ENV, ORIGIN, PORT } from '@config';
+import { CREDENTIALS, LOG_FORMAT, NODE_ENV, ORIGIN, PORT } from '@config';
 import { Route } from '@interfaces/router.interface';
 import { dbConnection } from './database';
 import { ErrorMiddleware } from './middlewares/error.middleware';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+import morgan from 'morgan';
+import { logger, stream } from './utils/logger';
 
 export class App {
   public app: express.Application;
@@ -25,7 +27,7 @@ export class App {
 
   public listening() {
     this.app.listen(this.port, () => {
-      console.log(`Listening on port ${this.port}`);
+      logger.info(`Listening on port ${this.port}`);
     });
   }
 
@@ -38,6 +40,7 @@ export class App {
   }
 
   private executeMiddlewares() {
+    this.app.use(morgan(LOG_FORMAT, { stream }));
     this.app.use(cors({ origin: ORIGIN, credentials: CREDENTIALS }));
     // this.app.use(express.json());
     // this.app.use(express.urlencoded({ extended: true }));

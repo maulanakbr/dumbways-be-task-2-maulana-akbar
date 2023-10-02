@@ -10,10 +10,10 @@ import {
 } from 'typeorm';
 import { Candidate } from '@interfaces/candidate.interface';
 
-@Entity()
+@Entity({ name: 'candidates' })
 export class CandidateEntity extends BaseEntity implements Candidate {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   @IsNotEmpty()
