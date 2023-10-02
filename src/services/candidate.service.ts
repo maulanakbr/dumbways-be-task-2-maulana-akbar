@@ -3,6 +3,7 @@ import { Service } from 'typedi';
 import { CandidateEntity } from '@/entities/candidate.entity';
 import { HttpException } from '@/exceptions/httpException';
 import { Repository } from 'typeorm';
+// import { deleteFile } from '@/utils/cloudinary';
 
 @Service()
 export class CandidateService extends Repository<CandidateEntity> {
@@ -33,14 +34,14 @@ export class CandidateService extends Repository<CandidateEntity> {
   }
 
   public async updateCandidate(
-    candidateId: number,
+    candidateId: string,
     candidateData: Candidate,
   ): Promise<Candidate> {
-    const findCandiate: Candidate = await CandidateEntity.findOne({
+    const findCandidate: Candidate = await CandidateEntity.findOne({
       where: { id: candidateId },
     });
 
-    if (!findCandiate)
+    if (!findCandidate)
       throw new HttpException(404, `Candidates cannot be found`);
 
     await CandidateEntity.update(candidateId, candidateData);
@@ -52,16 +53,16 @@ export class CandidateService extends Repository<CandidateEntity> {
     return updateCandidate;
   }
 
-  public async deleteCandidate(candidateId: number): Promise<Candidate> {
-    const findCandiate: Candidate = await CandidateEntity.findOne({
+  public async deleteCandidate(candidateId: string): Promise<Candidate> {
+    const findCandidate: Candidate = await CandidateEntity.findOne({
       where: { id: candidateId },
     });
 
-    if (!findCandiate)
+    if (!findCandidate)
       throw new HttpException(404, `Candidates cannot be found`);
 
     await CandidateEntity.delete({ id: candidateId });
 
-    return findCandiate;
+    return findCandidate;
   }
 }

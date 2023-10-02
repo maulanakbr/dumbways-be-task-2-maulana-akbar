@@ -12,3 +12,9 @@ export const uploadFile = async (filePath: string) => {
     folder: 'dumbways-be-task-2',
   });
 };
+
+export const deleteFile = async (fileURL: string) => {
+  return await cloudinary.api.delete_resources([fileURL], {
+    type: 'upload',
+  });
+};

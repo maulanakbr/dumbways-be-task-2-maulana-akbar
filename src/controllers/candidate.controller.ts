@@ -3,7 +3,7 @@ import { Container } from 'typedi';
 import { Candidate } from '@/interfaces/candidate.interface';
 import { CandidateService } from '@services/candidate.service';
 import { uploadFile } from '@/utils/cloudinary';
-import { HttpException } from '@/exceptions/httpException';
+// import { HttpException } from '@/exceptions/httpException';
 
 export class CandidateController {
   private candidate = Container.get(CandidateService);
@@ -17,10 +17,11 @@ export class CandidateController {
       const candidateData: Candidate = req.body;
       const file = req.file;
 
-      if (!file) throw new HttpException(400, 'File not found');
-
-      const uploadedFile = await uploadFile(file.path);
-      candidateData.image = uploadedFile.secure_url;
+      // if (!file) throw new HttpException(400, 'File not found');
+      if (file) {
+        const uploadedFile = await uploadFile(file.path);
+        candidateData.image = uploadedFile.secure_url;
+      }
 
       const createCandidateData: Candidate =
         await this.candidate.createCandidate(candidateData);
@@ -56,8 +57,15 @@ export class CandidateController {
     next: NextFunction,
   ): Promise<void> => {
     try {
-      const candidateId = Number(req.params.id);
+      const candidateId = req.params.id;
       const candidateData: Candidate = req.body;
+      const file = req.file;
+
+      if (file) {
+        const uploadedFile = await uploadFile(file.path);
+        candidateData.image = uploadedFile.secure_url;
+      }
+
       const updateCandidateData: Candidate =
         await this.candidate.updateCandidate(candidateId, candidateData);
 
@@ -73,7 +81,7 @@ export class CandidateController {
     next: NextFunction,
   ): Promise<void> => {
     try {
-      const candidateId = Number(req.params.id);
+      const candidateId = req.params.id;
       const deleteCandidateData: Candidate =
         await this.candidate.deleteCandidate(candidateId);
 

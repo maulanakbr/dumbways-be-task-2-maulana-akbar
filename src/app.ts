@@ -27,7 +27,7 @@ export class App {
 
   public listening() {
     this.app.listen(this.port, () => {
-      logger.info(`Listening on port ${this.port}`);
+      logger.info(`🚀 Listening on port ${this.port}`);
     });
   }
 
@@ -42,8 +42,6 @@ export class App {
   private executeMiddlewares() {
     this.app.use(morgan(LOG_FORMAT, { stream }));
     this.app.use(cors({ origin: ORIGIN, credentials: CREDENTIALS }));
-    // this.app.use(express.json());
-    // this.app.use(express.urlencoded({ extended: true }));
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: true }));
   }

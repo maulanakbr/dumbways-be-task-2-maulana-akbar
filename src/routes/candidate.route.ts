@@ -3,7 +3,7 @@ import { Route } from '@/interfaces/router.interface';
 import { CandidateController } from '@/controllers/candidate.controller';
 import { ValidationMiddleware } from '@/middlewares/validation.middleware';
 import { Upload } from '@/middlewares/upload.middleware';
-import { CreateCandidateDto } from '@/dtos/candidates.dto';
+import { CandidateDto } from '@/dtos/candidates.dto';
 
 export default class CandidateRoute implements Route {
   public path = '/candidates';
@@ -19,12 +19,13 @@ export default class CandidateRoute implements Route {
     this.router.post(
       `${this.path}`,
       Upload.single('image'),
-      ValidationMiddleware(CreateCandidateDto),
+      ValidationMiddleware(CandidateDto, true),
       this.candidates.createCandidate,
     );
     this.router.put(
       `${this.path}/:id`,
-      ValidationMiddleware(CreateCandidateDto, true),
+      Upload.single('image'),
+      ValidationMiddleware(CandidateDto, true),
       this.candidates.updateCandidate,
     );
     this.router.delete(`${this.path}/:id`, this.candidates.deleteCandidate);
