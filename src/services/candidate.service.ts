@@ -3,7 +3,7 @@ import { Service } from 'typedi';
 import { CandidateEntity } from '@/entities/candidate.entity';
 import { HttpException } from '@/exceptions/httpException';
 import { Repository } from 'typeorm';
-// import { deleteFile } from '@/utils/cloudinary';
+import { deleteFile } from '@/utils/cloudinary';
 
 @Service()
 export class CandidateService extends Repository<CandidateEntity> {
@@ -34,6 +34,7 @@ export class CandidateService extends Repository<CandidateEntity> {
   }
 
   public async updateCandidate(
+    isFile: Express.Multer.File,
     candidateId: string,
     candidateData: Candidate,
   ): Promise<Candidate> {
@@ -41,8 +42,14 @@ export class CandidateService extends Repository<CandidateEntity> {
       where: { id: candidateId },
     });
 
-    if (!findCandidate)
-      throw new HttpException(404, `Candidates cannot be found`);
+    if (findCandidate && findCandidate.image !== '' && isFile) {
+      const imageUrl = findCandidate.image
+        .split('/')[8]
+        .toString()
+        .split('.')[0];
+
+      await deleteFile(imageUrl);
+    }
 
     await CandidateEntity.update(candidateId, candidateData);
 

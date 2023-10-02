@@ -3,6 +3,8 @@ import { Container } from 'typedi';
 import { Candidate } from '@/interfaces/candidate.interface';
 import { CandidateService } from '@services/candidate.service';
 import { uploadFile } from '@/utils/cloudinary';
+import { CandidateEntity } from '@/entities/candidate.entity';
+import { HttpException } from '@/exceptions/httpException';
 // import { HttpException } from '@/exceptions/httpException';
 
 export class CandidateController {
@@ -61,13 +63,20 @@ export class CandidateController {
       const candidateData: Candidate = req.body;
       const file = req.file;
 
-      if (file) {
+      const findCandidate: Candidate = await CandidateEntity.findOne({
+        where: { id: candidateId },
+      });
+
+      if (!findCandidate)
+        throw new HttpException(404, `Candidates cannot be found`);
+
+      if (file && findCandidate) {
         const uploadedFile = await uploadFile(file.path);
         candidateData.image = uploadedFile.secure_url;
       }
 
       const updateCandidateData: Candidate =
-        await this.candidate.updateCandidate(candidateId, candidateData);
+        await this.candidate.updateCandidate(file, candidateId, candidateData);
 
       res.status(200).json({ data: updateCandidateData, message: 'updated' });
     } catch (error) {
