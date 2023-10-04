@@ -21,6 +21,7 @@ export class CandidateService extends Repository<CandidateEntity> {
     const createCandidateData: Candidate = await CandidateEntity.create({
       ...candidateData,
     }).save();
+
     return createCandidateData;
   }
 
@@ -31,6 +32,23 @@ export class CandidateService extends Repository<CandidateEntity> {
       throw new HttpException(404, `Candidates cannot be found`);
 
     return allCandidates;
+  }
+
+  public async findCandidateById(candidateId: string): Promise<Candidate> {
+    const candidateById: Candidate = await CandidateEntity.findOne({
+      where: { id: candidateId },
+      relations: {
+        votes: true,
+      },
+    });
+
+    if (!candidateById)
+      throw new HttpException(
+        404,
+        `Candidate with id: ${candidateById} cannot be found`,
+      );
+
+    return candidateById;
   }
 
   public async updateCandidate(

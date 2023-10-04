@@ -7,8 +7,11 @@ import {
   Unique,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 import { Candidate } from '@interfaces/candidate.interface';
+import { VoteEntity } from './vote.entity';
+import { Vote } from '@/interfaces/vote.interface';
 
 @Entity({ name: 'candidates' })
 export class CandidateEntity extends BaseEntity implements Candidate {
@@ -26,6 +29,9 @@ export class CandidateEntity extends BaseEntity implements Candidate {
 
   @Column()
   image: string;
+
+  @OneToMany(() => VoteEntity, vote => vote.candidate)
+  votes: Vote[];
 
   @Column()
   @CreateDateColumn()

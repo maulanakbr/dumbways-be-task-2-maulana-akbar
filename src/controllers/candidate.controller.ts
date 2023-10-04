@@ -53,6 +53,24 @@ export class CandidateController {
     }
   };
 
+  public findCandidateById = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) => {
+    try {
+      const candidateId = req.params.id;
+      const candidateById = await this.candidate.findCandidateById(candidateId);
+
+      res.status(201).json({
+        data: candidateById,
+        message: 'Found seleceted candidate',
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   public updateCandidate = async (
     req: Request,
     res: Response,

@@ -16,6 +16,7 @@ export default class CandidateRoute implements Route {
 
   private executeRoutes() {
     this.router.get(`${this.path}`, this.candidates.findAllCandidates);
+    this.router.get(`${this.path}/:id`, this.candidates.findCandidateById);
     this.router.post(
       `${this.path}`,
       Upload.single('image'),
